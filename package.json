@@ -1,0 +1,31 @@
+{
+  "name": "fastify-error",
+  "version": "0.1.0",
+  "description": "A small utility, used by Fastify itself, for generating consistent error objects across your codebase and plugins.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "standard && ava -v && tsd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-error.git"
+  },
+  "keywords": [
+    "fastify",
+    "error",
+    "utility",
+    "plugin"
+  ],
+  "author": "Tomas Della Vedova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-error/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-error#readme",
+  "devDependencies": {
+    "ava": "^3.9.0",
+    "standard": "^14.3.4",
+    "tsd": "^0.11.0"
+  }
+}
