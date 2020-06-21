@@ -1,6 +1,6 @@
 # fastify-error
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![](https://github.com/fastify/fastify-error/workflows/ci/badge.svg)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![build](https://github.com/fastify/fastify-error/workflows/build/badge.svg)
 
 A small utility, used by Fastify itself, for generating consistent error objects across your codebase and plugins.
 
