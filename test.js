@@ -93,3 +93,14 @@ test('FastifyError.toString returns code', t => {
   const err = new NewError()
   t.is(err.toString(), 'FastifyError [CODE]: foo')
 })
+
+test('Create the error without the new keyword', t => {
+  const NewError = createError('CODE', 'Not available')
+  const err = NewError()
+  t.true(err instanceof Error)
+  t.is(err.name, 'FastifyError')
+  t.is(err.message, 'Not available')
+  t.is(err.code, 'CODE')
+  t.is(err.statusCode, 500)
+  t.truthy(err.stack)
+})

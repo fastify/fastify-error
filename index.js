@@ -9,6 +9,9 @@ function createError (code, message, statusCode = 500, Base = Error) {
   code = code.toUpperCase()
 
   function FastifyError (a, b, c) {
+    if (!(this instanceof FastifyError)) {
+      return new FastifyError(a, b, c)
+    }
     Error.captureStackTrace(this, FastifyError)
     this.name = 'FastifyError'
     this.code = code
