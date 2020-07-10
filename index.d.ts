@@ -1,4 +1,5 @@
 export interface FastifyError extends Error {
+  new(): FastifyError
   code: string
   statusCode?: number
   validation?: ValidationResult[]
