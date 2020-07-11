@@ -7,3 +7,8 @@ expectType<string>(error.code)
 expectType<string>(error.message)
 expectType<number>(error.statusCode!)
 expectType<ValidationResult[]>(error.validation!)
+
+expectType<ValidationResult['params']>({
+  stringParam: 'a',
+  stringArrayParam: ['a', 'b', 'c'],
+} as Record<string, string | string[]>);
