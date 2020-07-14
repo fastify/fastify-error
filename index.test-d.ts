@@ -8,7 +8,8 @@ expectType<string>(error.message)
 expectType<number>(error.statusCode!)
 expectType<ValidationResult[]>(error.validation!)
 
-expectType<ValidationResult['params']>({
+const validationResultParams: Record<string, string | string[]> = {
   stringParam: 'a',
   stringArrayParam: ['a', 'b', 'c'],
-} as Record<string, string | string[]>);
+}
+expectType<ValidationResult['params']>(validationResultParams)
