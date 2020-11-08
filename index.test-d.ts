@@ -6,6 +6,7 @@ expectType<FastifyError>(error)
 expectType<string>(error.code)
 expectType<string>(error.message)
 expectType<number>(error.statusCode!)
+expectType<string>(error.validationContext!)
 expectType<ValidationResult[]>(error.validation!)
 
 const validationResultParams: Record<string, string | string[]> = {
