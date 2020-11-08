@@ -2,6 +2,7 @@ export interface FastifyError extends Error {
   code: string
   statusCode?: number
   validation?: ValidationResult[]
+  validationContext?: string
 }
 
 export interface ValidationResult {
@@ -18,6 +19,5 @@ declare function createError (
   statusCode?: number,
   Base?: Error
 ): FastifyError
-
 
 export default createError
