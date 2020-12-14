@@ -4,6 +4,12 @@ export interface FastifyError extends Error {
   validation?: ValidationResult[]
 }
 
+export interface FastifyErrorConstructor extends ErrorConstructor {
+  new(a?: any, b?: any, c?: any): FastifyError;
+  (a?: any, b?: any, c?: any): FastifyError;
+  readonly prototype: FastifyError;
+}
+
 export interface ValidationResult {
   keyword: string
   dataPath: string
@@ -17,7 +23,7 @@ declare function createError (
   message: string,
   statusCode?: number,
   Base?: Error
-): FastifyError
+): FastifyErrorConstructor
 
 
-export default createError
+export default createError;
