@@ -22,8 +22,9 @@ declare function createError (
   code: string,
   message: string,
   statusCode?: number,
-  Base?: Error
-): FastifyErrorConstructor
+  Base?: ErrorConstructor
+): typeof FastifyError
 
 
 export default createError;
+export { createError };
