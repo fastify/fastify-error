@@ -29,5 +29,10 @@
     "standard": "^14.3.4",
     "tsd": "^0.11.0",
     "typescript": "^4.1.3"
+  },
+  "tsd": {
+    "compilerOptions": {
+      "esModuleInterop": true
+    }
   }
 }
