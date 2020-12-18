@@ -1,23 +1,23 @@
-export interface FastifyError extends Error {
-  code: string
-  statusCode?: number
-  validation?: ValidationResult[]
-}
-
-export interface ValidationResult {
-  keyword: string
-  dataPath: string
-  schemaPath: string
-  params: Record<string, string | string[]>
-  message: string
-}
+export = createError
 
 declare function createError (
   code: string,
   message: string,
   statusCode?: number,
   Base?: Error
-): FastifyError
+): createError.FastifyErrorConstructor
 
+declare namespace createError {
+  interface FastifyError extends Error {
+    code: string;
+    name: string;
+    statusCode?: number;
+  }
+  interface FastifyErrorConstructor {
+    new(a?: any, b?: any, c?: any): FastifyError;
+    (a?: any, b?: any, c?: any): FastifyError;
+    readonly prototype: FastifyError;
+  }
 
-export default createError
+  var FastifyError: FastifyErrorConstructor;
+}
