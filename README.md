@@ -14,7 +14,7 @@ npm i fastify-error
 
 ### Usage
 
-The module exports a function that you can use consistent error objects, it takes 4 parameters.
+The module exports a function that you can use consistent error objects, it takes 4 parameters:
 
 ```
 createError(code, message [, statusCode [, Base]])
@@ -31,7 +31,7 @@ const CustomError = createError('ERROR_CODE', 'message')
 console.log(new CustomError())
 ```
 
-How to use a interpolated string:
+How to use an interpolated string:
 ```js
 const createError = require('fastify-error')
 const CustomError = createError('ERROR_CODE', 'Hello %s')
