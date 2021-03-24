@@ -1,6 +1,9 @@
 # fastify-error
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![build](https://github.com/fastify/fastify-error/workflows/build/badge.svg)
+![CI](https://github.com/fastify/fastify-error/workflows/CI/badge.svg)
+[![NPM version](https://img.shields.io/npm/v/fastify-error.svg?style=flat)](https://www.npmjs.com/package/fastify-error)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-error/badge.svg)](https://snyk.io/test/github/fastify/fastify-error)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A small utility, used by Fastify itself, for generating consistent error objects across your codebase and plugins.
 
@@ -11,7 +14,7 @@ npm i fastify-error
 
 ### Usage
 
-The module exports a function that you can use consistent error objects, it takes 4 parameters.
+The module exports a function that you can use consistent error objects, it takes 4 parameters:
 
 ```
 createError(code, message [, statusCode [, Base]])
@@ -28,7 +31,7 @@ const CustomError = createError('ERROR_CODE', 'message')
 console.log(new CustomError())
 ```
 
-How to use a interpolated string:
+How to use an interpolated string:
 ```js
 const createError = require('fastify-error')
 const CustomError = createError('ERROR_CODE', 'Hello %s')
