@@ -14,15 +14,15 @@ npm i fastify-error
 
 ### Usage
 
-The module exports a function that you can use consistent error objects, it takes 4 parameters:
+The module exports a function that you can use for consistent error objects, it takes 4 parameters:
 
 ```
 createError(code, message [, statusCode [, Base]])
 ```
 
-- `code` (`string`, required) - The error code, you can access it later with `error.code`. For consistency, we recommend to prefix the plugins error codes with `FST_`
+- `code` (`string`, required) - The error code, you can access it later with `error.code`. For consistency, we recommend prefixing plugin error codes with `FST_`
 - `message` (`string`, required) - The error message. You can also use interpolated strings for formatting the message.
-- `statusCode` (`number`, optional) - The status code that Fastify will use if the error is sent via http.
+- `statusCode` (`number`, optional) - The status code that Fastify will use if the error is sent via HTTP.
 - `Base` (`Error`, optional) - The base error object that will be used. (eg `TypeError`, `RangeError`)
 
 ```js
