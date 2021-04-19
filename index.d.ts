@@ -13,11 +13,10 @@ declare namespace createError {
     name: string;
     statusCode?: number;
   }
+
   interface FastifyErrorConstructor {
     new(a?: any, b?: any, c?: any): FastifyError;
     (a?: any, b?: any, c?: any): FastifyError;
     readonly prototype: FastifyError;
   }
-
-  var FastifyError: FastifyErrorConstructor;
 }
