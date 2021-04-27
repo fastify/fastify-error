@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/fastify/fastify-error#readme",
   "devDependencies": {
-    "@types/node": "^14.14.14",
+    "@types/node": "^15.0.0",
     "ava": "^3.9.0",
     "standard": "^16.0.3",
     "tsd": "^0.14.0",
