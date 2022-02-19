@@ -9,7 +9,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
   code = code.toUpperCase()
 
   function FastifyError (a, b, c) {
-    if (!new.target) {
+    if (!(this instanceof FastifyError)) {
       return new FastifyError(a, b, c)
     }
     Error.captureStackTrace(this, FastifyError)
