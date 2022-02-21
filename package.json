@@ -1,6 +1,6 @@
 {
   "name": "fastify-error",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "A small utility, used by Fastify itself, for generating consistent error objects across your codebase and plugins.",
   "main": "index.js",
   "types": "index.d.ts",
