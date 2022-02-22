@@ -92,4 +92,5 @@ test('FastifyError.toString returns code', t => {
   const NewError = createError('CODE', 'foo')
   const err = new NewError()
   t.is(err.toString(), 'FastifyError [CODE]: foo')
+  t.is(Object.prototype.toString.call(err), '[object Error]')
 })
