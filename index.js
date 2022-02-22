@@ -28,7 +28,7 @@ function createError (code, message, statusCode = 500, Base = Error, uriReferenc
     }
 
     this.statusCode = statusCode || undefined
-    this.uriReference = uriReference || 'about:blank'
+    this.uriReference = uriReference || undefined
   }
   FastifyError.prototype[Symbol.toStringTag] = 'Error'
 
@@ -38,13 +38,13 @@ function createError (code, message, statusCode = 500, Base = Error, uriReferenc
 
   FastifyError.prototype.toRFC7807 = function (instance, details) {
     return {
-      type: this.uriReference,
+      type: this.uriReference || 'about:blank',
       title: this.name,
       status: this.statusCode,
       detail: this.message,
       instance: instance || '',
       code: this.code,
-      details: details || []
+      details: details || {}
     }
   }
 

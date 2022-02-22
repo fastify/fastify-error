@@ -11,4 +11,4 @@ expectType<number>(err.statusCode!)
 
 expectType<RFC7807Error>(err.toRFC7807());
 expectType<RFC7807Error>(err.toRFC7807('/dev/null'));
-expectType<RFC7807Error>(err.toRFC7807(undefined, [{ description: 'missing value for key'}]));
+expectType<RFC7807Error>(err.toRFC7807(undefined, { description: 'missing value for key'}));

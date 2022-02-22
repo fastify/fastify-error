@@ -50,7 +50,7 @@ declare namespace createError {
      */
     instance: string;
     code: string;
-    details: { [key: string]: any }[];
+    details: { [key: string]: any };
   }
 
   interface FastifyErrorConstructor {
