@@ -2,7 +2,7 @@
 
 const { inherits, format } = require('util')
 
-function createError (code, message, statusCode = 500, Base = Error) {
+function createError (code, message, statusCode = 500, Base = Error, uriReference) {
   if (!code) throw new Error('Fastify error code must not be empty')
   if (!message) throw new Error('Fastify error message must not be empty')
 
@@ -28,11 +28,24 @@ function createError (code, message, statusCode = 500, Base = Error) {
     }
 
     this.statusCode = statusCode || undefined
+    this.uriReference = uriReference || 'about:blank'
   }
   FastifyError.prototype[Symbol.toStringTag] = 'Error'
 
   FastifyError.prototype.toString = function () {
     return `${this.name} [${this.code}]: ${this.message}`
+  }
+
+  FastifyError.prototype.toRFC7807 = function (instance, details) {
+    return {
+      type: this.uriReference,
+      title: this.name,
+      status: this.statusCode,
+      detail: this.message,
+      instance: instance || '',
+      code: this.code,
+      details: details || []
+    }
   }
 
   inherits(FastifyError, Base)
