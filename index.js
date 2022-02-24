@@ -11,9 +11,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
   class FastifyError extends Base {
     constructor (a, b, c) {
       super()
-      if (new.target === undefined) {
-        return new FastifyError(a, b, c)
-      }
+      
       Error.captureStackTrace(this, FastifyError)
       this.name = 'FastifyError'
       this.code = code
