@@ -27,7 +27,13 @@ test('Create error with 1 parameter', t => {
   t.truthy(err.stack)
 })
 
-test('Create error with 2 parameters', t => {
+test('Create error with 1 parameter set to undefined', t => {
+  const NewError = createError('CODE', 'hey %s')
+  const err = new NewError(undefined)
+  t.is(err.message, 'hey undefined')
+})
+
+test('Create error with 2 parameters', (t) => {
   const NewError = createError('CODE', 'hey %s, I like your %s')
   const err = new NewError('alice', 'attitude')
   t.true(err instanceof Error)
@@ -38,12 +44,27 @@ test('Create error with 2 parameters', t => {
   t.truthy(err.stack)
 })
 
+test('Create error with 2 parameters set to undefined', t => {
+  const NewError = createError('CODE', 'hey %s, I like your %s')
+  const err = new NewError(undefined, undefined)
+  t.is(err.message, 'hey undefined, I like your undefined')
+})
+
 test('Create error with 3 parameters', t => {
   const NewError = createError('CODE', 'hey %s, I like your %s %s')
   const err = new NewError('alice', 'attitude', 'see you')
   t.true(err instanceof Error)
   t.is(err.name, 'FastifyError')
   t.is(err.message, 'hey alice, I like your attitude see you')
+  t.is(err.code, 'CODE')
+  t.is(err.statusCode, 500)
+  t.truthy(err.stack)
+})
+
+test('Create error with 3 parameters set to undefined', t => {
+  const NewError = createError('CODE', 'hey %s, I like your %s %s')
+  const err = new NewError(undefined, undefined, undefined)
+  t.is(err.message, 'hey undefined, I like your undefined undefined')
   t.is(err.code, 'CODE')
   t.is(err.statusCode, 500)
   t.truthy(err.stack)

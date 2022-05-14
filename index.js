@@ -10,21 +10,28 @@ function createError (code, message, statusCode = 500, Base = Error) {
 
   function FastifyError (a, b, c) {
     if (!new.target) {
-      return new FastifyError(a, b, c)
+      return new FastifyError(...arguments)
     }
     Error.captureStackTrace(this, FastifyError)
     this.name = 'FastifyError'
     this.code = code
 
     // more performant than spread (...) operator
-    if (a && b && c) {
-      this.message = format(message, a, b, c)
-    } else if (a && b) {
-      this.message = format(message, a, b)
-    } else if (a) {
-      this.message = format(message, a)
-    } else {
-      this.message = message
+    switch (arguments.length) {
+      case 3:
+        this.message = format(message, a, b, c)
+        break
+      case 2:
+        this.message = format(message, a, b)
+        break
+      case 1:
+        this.message = format(message, a)
+        break
+      case 0:
+        this.message = message
+        break
+      default:
+        this.message = format(message, ...arguments)
     }
 
     this.statusCode = statusCode || undefined
