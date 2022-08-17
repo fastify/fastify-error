@@ -5,7 +5,9 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "standard && ava -v && tsd"
+    "test": "npm run test:unit && npm run test:typescript",
+    "test:unit": "tap",
+    "test:typescript": "tsd"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,7 @@
   "homepage": "https://github.com/fastify/fastify-error#readme",
   "devDependencies": {
     "@types/node": "^18.0.0",
-    "ava": "^4.0.1",
+    "tap": "^16.0.0",
     "standard": "^17.0.0",
     "tsd": "^0.22.0",
     "typescript": "^4.1.3"
