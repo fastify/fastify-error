@@ -111,13 +111,13 @@ test('Create error with no statusCode property', t => {
 test('Should throw when error code has no fastify code', t => {
   t.plan(1)
 
-  t.throws(() => createError(), 'Fastify error code must not be empty')
+  t.throws(() => createError(), new Error('Fastify error code must not be empty'))
 })
 
 test('Should throw when error code has no message', t => {
   t.plan(1)
 
-  t.throws(() => createError('code'), 'Fastify error message must not be empty')
+  t.throws(() => createError('code'), new Error('Fastify error message must not be empty'))
 })
 
 test('Create error with different base', t => {
