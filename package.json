@@ -27,9 +27,8 @@
   },
   "homepage": "https://github.com/fastify/fastify-error#readme",
   "devDependencies": {
-    "@types/node": "^18.0.0",
-    "tap": "^16.0.0",
     "standard": "^17.0.0",
+    "tap": "^16.0.0",
     "tsd": "^0.22.0"
   },
   "tsd": {
