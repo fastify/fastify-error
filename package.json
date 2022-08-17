@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "A small utility, used by Fastify itself, for generating consistent error objects across your codebase and plugins.",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard",
     "test": "npm run test:unit && npm run test:typescript",
