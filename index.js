@@ -47,4 +47,14 @@ function createError (code, message, statusCode = 500, Base = Error) {
   return FastifyError
 }
 
+function isFastifyError (obj) {
+  return (
+    Object.prototype.toString.call(obj) === '[object Error]' &&
+    obj.name === 'FastifyError'
+  )
+}
+
 module.exports = createError
+module.exports.default = createError
+module.exports.createError = createError
+module.exports.isFastifyError = isFastifyError

@@ -4,6 +4,7 @@
 
 const test = require('tap').test
 const createError = require('..')
+const isFastifyError = require('..').isFastifyError
 
 test('Create error with zero parameter', t => {
   t.plan(6)
@@ -153,4 +154,18 @@ test('Create the error without the new keyword', t => {
   t.equal(err.code, 'CODE')
   t.equal(err.statusCode, 500)
   t.ok(err.stack)
+})
+
+test('isFastifyError', t => {
+  t.plan(8)
+
+  const NewError = createError('CODE', 'Not available')
+  t.equal(isFastifyError(NewError()), true)
+  t.equal(isFastifyError(new NewError()), true)
+  t.equal(isFastifyError(undefined), false)
+  t.equal(isFastifyError(null), false)
+  t.equal(isFastifyError({}), false)
+  t.equal(isFastifyError('FastifyError'), false)
+  t.equal(isFastifyError(new Error('Generic Error')), false)
+  t.equal(isFastifyError(new Error('FastifyError')), false)
 })
