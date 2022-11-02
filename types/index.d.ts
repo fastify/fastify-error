@@ -19,7 +19,5 @@ declare namespace createError {
     (a?: any, b?: any, c?: any): FastifyError;
     readonly prototype: FastifyError;
   }
-  function isFastifyError (obj: any): obj is createError.FastifyError
+  function isFastifyError (value: any): value is createError.FastifyError
 }
-
-declare function isFastifyError (obj: any): obj is createError.FastifyError

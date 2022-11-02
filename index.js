@@ -47,10 +47,10 @@ function createError (code, message, statusCode = 500, Base = Error) {
   return FastifyError
 }
 
-function isFastifyError (obj) {
+function isFastifyError (value) {
   return (
-    Object.prototype.toString.call(obj) === '[object Error]' &&
-    obj.name === 'FastifyError'
+    Object.prototype.toString.call(value) === '[object Error]' &&
+    value.name === 'FastifyError'
   )
 }
 

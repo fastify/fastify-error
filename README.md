@@ -13,7 +13,9 @@ npm i @fastify/error
 
 ### Usage
 
-The module exports a function that you can use for consistent error objects, it takes 4 parameters:
+#### createError
+
+The module exports a createError-function that you can use for consistent error objects, it takes 4 parameters:
 
 ```
 createError(code, message [, statusCode [, Base]])
@@ -35,6 +37,26 @@ How to use an interpolated string:
 const createError = require('@fastify/error')
 const CustomError = createError('ERROR_CODE', 'Hello %s')
 console.log(new CustomError('world')) // error.message => 'Hello world'
+```
+
+#### isFastifyError
+
+The module exports a isFastifyError-function that you can use to check if a value is of type FastifyError, it takes one parameters:
+
+```
+isFastifyError(value)
+```
+
+- `value` (`any`, required) - The potential FastifyError-object.
+
+
+```js
+const createError = require('@fastify/error')
+const isFastifyError = require('@fastify/error').isFastifyError
+const CustomError = createError('ERROR_CODE', 'message')
+
+console.log(isFastifyError(new CustomError())) // true
+console.log(isFastifyError(new Error())) // false
 ```
 
 ## License
