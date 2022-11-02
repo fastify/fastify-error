@@ -36,7 +36,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
 
     this.statusCode = statusCode || undefined
   }
-  FastifyError.prototype[Symbol.toStringTag] = 'Error'
+  FastifyError.prototype[Symbol.toStringTag] = 'FastifyError'
 
   FastifyError.prototype.toString = function () {
     return `${this.name} [${this.code}]: ${this.message}`
@@ -48,10 +48,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
 }
 
 function isFastifyError (value) {
-  return (
-    Object.prototype.toString.call(value) === '[object Error]' &&
-    value.name === 'FastifyError'
-  )
+  return Object.prototype.toString.call(value) === '[object FastifyError]'
 }
 
 module.exports = createError
