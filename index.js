@@ -48,3 +48,5 @@ function createError (code, message, statusCode = 500, Base = Error) {
 }
 
 module.exports = createError
+module.exports.default = createError
+module.exports.createError = createError
