@@ -2,10 +2,10 @@ import createError, { FastifyError, FastifyErrorConstructor } from '..'
 import { expectType } from 'tsd'
 
 const CustomError = createError('ERROR_CODE', 'message')
-expectType<FastifyErrorConstructor>(CustomError)
+expectType<FastifyErrorConstructor<{ code: 'ERROR_CODE' }>>(CustomError)
 const err = new CustomError()
-expectType<FastifyError>(err)
-expectType<string>(err.code)
+expectType<FastifyError & { code: 'ERROR_CODE' }>(err)
+expectType<'ERROR_CODE'>(err.code)
 expectType<string>(err.message)
 expectType<number>(err.statusCode!)
 
