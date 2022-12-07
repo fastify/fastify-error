@@ -10,7 +10,7 @@ declare namespace createError {
     statusCode?: number;
   }
 
-  export interface FastifyErrorConstructor<E extends {} = {}> {
+  export interface FastifyErrorConstructor<E extends { code: string; statusCode?: number } = { code: string; statusCode?: number }> {
     new (a?: any, b?: any, c?: any): FastifyError & E;
     (a?: any, b?: any, c?: any): FastifyError & E;
     readonly prototype: FastifyError & E;
