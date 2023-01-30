@@ -7,14 +7,15 @@ function createError (code, message, statusCode = 500, Base = Error) {
   if (!message) throw new Error('Fastify error message must not be empty')
 
   code = code.toUpperCase()
+  !statusCode && (statusCode = undefined)
 
   function FastifyError (a, b, c) {
     if (!new.target) {
       return new FastifyError(...arguments)
     }
-    Error.captureStackTrace(this, FastifyError)
-    this.name = 'FastifyError'
     this.code = code
+    this.name = 'FastifyError'
+    this.statusCode = statusCode
 
     // more performant than spread (...) operator
     switch (arguments.length) {
@@ -34,8 +35,9 @@ function createError (code, message, statusCode = 500, Base = Error) {
         this.message = format(message, ...arguments)
     }
 
-    this.statusCode = statusCode || undefined
+    Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
   }
+
   FastifyError.prototype[Symbol.toStringTag] = 'Error'
 
   FastifyError.prototype.toString = function () {
