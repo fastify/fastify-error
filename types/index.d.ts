@@ -1,7 +1,7 @@
 declare function createError<
   C extends string,
   SC extends number,
-  Arg extends unknown[] = [any?, any?, any?],
+  Arg extends [unknown?, unknown?, unknown?] = [any?, any?, any?],
 >(code: C, message: string, statusCode: SC, Base?: Error): createError.FastifyErrorConstructor<{
   code: C;
   statusCode: SC
@@ -9,7 +9,7 @@ declare function createError<
 
 declare function createError<
   C extends string,
-  Arg extends unknown[] = [any?, any?, any?],
+  Arg extends [unknown?, unknown?, unknown?] = [any?, any?, any?],
 >(code: C, message: string, statusCode?: number, Base?: Error): createError.FastifyErrorConstructor<{
   code: C;
 }, Arg>;
@@ -26,7 +26,7 @@ declare namespace createError {
   export interface FastifyErrorConstructor<E extends { code: string; statusCode?: number } = {
     code: string;
     statusCode?: number
-  }, T extends unknown[] = [any?, any?, any?]> {
+  }, T extends [unknown?, unknown?, unknown?] = [any?, any?, any?]> {
     new(...arg: T): FastifyError & E;
 
     (...arg: T): FastifyError & E;
