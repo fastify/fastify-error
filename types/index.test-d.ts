@@ -1,5 +1,5 @@
-import createError, { FastifyError, FastifyErrorConstructor } from '..'
-import { expectType } from 'tsd'
+import createError, {FastifyError, FastifyErrorConstructor} from '..'
+import {expectType} from 'tsd'
 
 const CustomError = createError('ERROR_CODE', 'message')
 expectType<FastifyErrorConstructor<{ code: 'ERROR_CODE' }>>(CustomError)
@@ -16,3 +16,16 @@ expectType<FastifyError & { code: 'OTHER_CODE'; statusCode: 400 }>(typed)
 expectType<'OTHER_CODE'>(typed.code)
 expectType<string>(typed.message)
 expectType<400>(typed.statusCode)
+
+
+const CustomTypedArgError = createError<string, number, [string]>('OTHER_CODE', 'expect %s message', 400)
+
+CustomTypedArgError('a')
+// @ts-expect-error
+CustomTypedArgError('a', 'b')
+// @ts-expect-error
+new CustomTypedArgError('a', 'b')
+// @ts-expect-error
+CustomTypedArgError(1)
+// @ts-expect-error
+new CustomTypedArgError(1)
