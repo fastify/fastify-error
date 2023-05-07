@@ -18,8 +18,7 @@ expectType<string>(typed.message)
 expectType<400>(typed.statusCode)
 
 
-const CustomTypedArgError = createError<string, number, [string]>('OTHER_CODE', 'expect %s message', 400)
-
+const CustomTypedArgError = createError<[string]>('OTHER_CODE', 'expect %s message', 400)
 CustomTypedArgError('a')
 // @ts-expect-error
 CustomTypedArgError('a', 'b')
@@ -29,3 +28,14 @@ new CustomTypedArgError('a', 'b')
 CustomTypedArgError(1)
 // @ts-expect-error
 new CustomTypedArgError(1)
+
+const CustomTypedArgError2 = createError<string, number, [string]>('OTHER_CODE', 'expect %s message', 400)
+CustomTypedArgError2('a')
+// @ts-expect-error
+CustomTypedArgError2('a', 'b')
+// @ts-expect-error
+new CustomTypedArgError2('a', 'b')
+// @ts-expect-error
+CustomTypedArgError2(1)
+// @ts-expect-error
+new CustomTypedArgError2(1)

@@ -14,6 +14,12 @@ declare function createError<
   code: C;
 }, Arg>;
 
+declare function createError<
+  Arg extends unknown[] = [any?, any?, any?],
+>(code: string, message: string, statusCode?: number, Base?: Error): createError.FastifyErrorConstructor<{
+  code: string;
+}, Arg>;
+
 type CreateError = typeof createError;
 
 declare namespace createError {
