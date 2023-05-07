@@ -39,7 +39,7 @@ declare namespace createError {
   }
 
   export const createError: CreateError
-  export {createError as default}
+  export { createError as default }
 }
 
 export = createError
