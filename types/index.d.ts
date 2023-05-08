@@ -29,10 +29,7 @@ declare namespace createError {
   }
 
   export interface FastifyErrorConstructor<
-    E extends { code: string, statusCode?: number } = {
-      code: string
-      statusCode?: number
-    },
+    E extends { code: string, statusCode?: number } = { code: string, statusCode?: number },
     T extends unknown[] = [any?, any?, any?]
   > {
     new(...arg: T): FastifyError & E
