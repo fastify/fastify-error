@@ -7,7 +7,7 @@ const err = new CustomError()
 expectType<FastifyError & { code: 'ERROR_CODE' }>(err)
 expectType<'ERROR_CODE'>(err.code)
 expectType<string>(err.message)
-expectType<number>(err.statusCode!)
+expectType<number | undefined>(err.statusCode)
 
 const CustomTypedError = createError('OTHER_CODE', 'message', 400)
 expectType<FastifyErrorConstructor<{ code: 'OTHER_CODE', statusCode: 400 }>>(CustomTypedError)
