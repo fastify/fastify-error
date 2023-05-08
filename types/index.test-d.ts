@@ -1,4 +1,4 @@
-import createError, { FastifyError, FastifyErrorConstructor } from '..'
+import createError, { type FastifyError, type FastifyErrorConstructor } from '..'
 import { expectType } from 'tsd'
 
 const CustomError = createError('ERROR_CODE', 'message')
