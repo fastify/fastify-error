@@ -1,6 +1,7 @@
 'use strict'
 
-const { inherits, format } = require('util')
+const { inherits } = require('util')
+const formatFn = require('./lib/formatFn')
 
 function createError (code, message, statusCode = 500, Base = Error) {
   if (!code) throw new Error('Fastify error code must not be empty')
@@ -9,31 +10,16 @@ function createError (code, message, statusCode = 500, Base = Error) {
   code = code.toUpperCase()
   !statusCode && (statusCode = undefined)
 
-  function FastifyError (a, b, c) {
+  const format = formatFn(message)
+
+  function FastifyError () {
     if (!new.target) {
       return new FastifyError(...arguments)
     }
     this.code = code
     this.name = 'FastifyError'
     this.statusCode = statusCode
-
-    // more performant than spread (...) operator
-    switch (arguments.length) {
-      case 3:
-        this.message = format(message, a, b, c)
-        break
-      case 2:
-        this.message = format(message, a, b)
-        break
-      case 1:
-        this.message = format(message, a)
-        break
-      case 0:
-        this.message = message
-        break
-      default:
-        this.message = format(message, ...arguments)
-    }
+    this.message = format(arguments)
 
     Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
   }
