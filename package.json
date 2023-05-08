@@ -30,7 +30,8 @@
     "benchmark": "^2.1.4",
     "tap": "^16.0.0",
     "ts-standard": "^12.0.2",
-    "tsd": "^0.28.0"
+    "tsd": "^0.28.0",
+    "typescript": "^5.0.4"
   },
   "tsd": {
     "compilerOptions": {
