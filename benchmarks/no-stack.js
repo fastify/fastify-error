@@ -1,7 +1,7 @@
 'use strict'
 
 const benchmark = require('benchmark')
-const createError = require('../types')
+const createError = require('..')
 
 const FastifyError = createError('CODE', 'Not available')
 Error.stackTraceLimit = 0

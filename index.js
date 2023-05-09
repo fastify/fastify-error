@@ -14,7 +14,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
 
   function FastifyError () {
     if (!new.target) {
-      return new FastifyError(...arguments)
+      return new FastifyError(...args)
     }
     this.code = code
     this.name = 'FastifyError'
