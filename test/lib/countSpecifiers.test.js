@@ -24,6 +24,5 @@ test('countSpecifiers', t => {
       t.plan(1)
       t.equal(countSpecifiers(testCase), expected)
     })
-
   }
 })

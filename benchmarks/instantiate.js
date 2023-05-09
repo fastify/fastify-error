@@ -3,11 +3,10 @@
 const benchmark = require('benchmark')
 const createError = require('..')
 
-
 Error.stackTraceLimit = 0
 
 const FastifyError = createError('CODE', 'Not available')
-const FastifySpecialError =  createError('CODE', '%s available')
+const FastifySpecialError = createError('CODE', '%s available')
 
 const Not = 'Not'
 
