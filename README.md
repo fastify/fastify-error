@@ -42,7 +42,7 @@ console.log(new CustomError('world')) // error.message => 'Hello world'
 It's possible to limit your error constructor with TypeScript generic type:
 
 ```ts
-const CustomError = createError('ERROR_CODE', 'Hello %s')
+const CustomError = createError<[string]>('ERROR_CODE', 'Hello %s')
 new CustomError('world')
 //@ts-expect-error
 new CustomError(1)
