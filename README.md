@@ -37,6 +37,19 @@ const CustomError = createError('ERROR_CODE', 'Hello %s')
 console.log(new CustomError('world')) // error.message => 'Hello world'
 ```
 
+### TypeScript
+
+It is possible to limit your error constructor with a generic type using TypeScript:
+
+```ts
+const CustomError = createError<[string]>('ERROR_CODE', 'Hello %s')
+new CustomError('world')
+//@ts-expect-error
+new CustomError(1)
+//@ts-expect-error
+new CustomError(1)
+```
+
 ## License
 
 Licensed under [MIT](./LICENSE).
