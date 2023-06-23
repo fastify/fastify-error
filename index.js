@@ -1,6 +1,10 @@
 'use strict'
 
-const { inherits, format } = require('util')
+const { format } = require('util')
+
+function toString () {
+  return `${this.name} [${this.code}]: ${this.message}`
+}
 
 function createError (code, message, statusCode = 500, Base = Error) {
   if (!code) throw new Error('Fastify error code must not be empty')
@@ -22,13 +26,18 @@ function createError (code, message, statusCode = 500, Base = Error) {
     Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
   }
 
+  FastifyError.prototype = Object.create(Base.prototype, {
+    constructor: {
+      value: FastifyError,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  })
+
   FastifyError.prototype[Symbol.toStringTag] = 'Error'
 
-  FastifyError.prototype.toString = function () {
-    return `${this.name} [${this.code}]: ${this.message}`
-  }
-
-  inherits(FastifyError, Base)
+  FastifyError.prototype.toString = toString
 
   return FastifyError
 }
