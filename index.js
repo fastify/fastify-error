@@ -32,14 +32,12 @@ function createError (code, message, statusCode = 500, Base = Error) {
       enumerable: false,
       writable: true,
       configurable: true
-    },
-    toString: {
-      value: toString
-    },
-    [Symbol.toStringTag]: {
-      value: 'Error'
     }
   })
+
+  FastifyError.prototype[Symbol.toStringTag] = 'Error'
+
+  FastifyError.prototype.toString = toString
 
   return FastifyError
 }
