@@ -22,7 +22,7 @@ createError(code, message [, statusCode [, Base]])
 - `code` (`string`, required) - The error code, you can access it later with `error.code`. For consistency, we recommend prefixing plugin error codes with `FST_`
 - `message` (`string`, required) - The error message. You can also use interpolated strings for formatting the message.
 - `statusCode` (`number`, optional) - The status code that Fastify will use if the error is sent via HTTP.
-- `Base` (`Error`, optional) - The base error object that will be used. (eg `TypeError`, `RangeError`)
+- `Base` (`ErrorConstructor`, optional) - The base error object that will be used. (eg `TypeError`, `RangeError`)
 
 ```js
 const createError = require('@fastify/error')
