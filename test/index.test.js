@@ -1,7 +1,5 @@
 'use strict'
 
-/* eslint no-prototype-builtins: 0 */
-
 const test = require('tap').test
 const createError = require('..')
 
