@@ -26,8 +26,8 @@ createError(code, message [, statusCode [, Base]])
 
 ```js
 const createError = require('@fastify/error')
-const CustomError = createError('ERROR_CODE', 'message')
-console.log(new CustomError())
+const CustomError = createError('ERROR_CODE', 'Hello')
+console.log(new CustomError()) // error.message => 'Hello'
 ```
 
 How to use an interpolated string:
@@ -44,8 +44,6 @@ It is possible to limit your error constructor with a generic type using TypeScr
 ```ts
 const CustomError = createError<[string]>('ERROR_CODE', 'Hello %s')
 new CustomError('world')
-//@ts-expect-error
-new CustomError(1)
 //@ts-expect-error
 new CustomError(1)
 ```
