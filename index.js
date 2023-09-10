@@ -1,6 +1,6 @@
 'use strict'
 
-const { format } = require('util')
+const { format } = require('node:util')
 
 function toString () {
   return `${this.name} [${this.code}]: ${this.message}`
