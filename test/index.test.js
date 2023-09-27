@@ -158,7 +158,6 @@ test('Create an error with cause', t => {
   const NewError = createError('CODE', 'Not available', 500, TypeError, true)
   const err = NewError(new Error('Hey'));
 
-  console.error(err)
   t.ok(err instanceof Error);
   t.ok(err.cause)
 })
