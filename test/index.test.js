@@ -152,3 +152,13 @@ test('Create the error without the new keyword', t => {
   t.equal(err.statusCode, 500)
   t.ok(err.stack)
 })
+
+test('Create an error with cause', t => {
+  t.plan(2);
+  const NewError = createError('CODE', 'Not available', 500, TypeError, true)
+  const err = NewError(new Error('Hey'));
+
+  console.error(err)
+  t.ok(err instanceof Error);
+  t.ok(err.cause)
+})

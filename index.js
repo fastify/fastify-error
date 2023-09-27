@@ -6,7 +6,7 @@ function toString () {
   return `${this.name} [${this.code}]: ${this.message}`
 }
 
-function createError (code, message, statusCode = 500, Base = Error) {
+function createError (code, message, statusCode = 500, Base = Error, hasCause = false) {
   if (!code) throw new Error('Fastify error code must not be empty')
   if (!message) throw new Error('Fastify error message must not be empty')
 
@@ -20,7 +20,11 @@ function createError (code, message, statusCode = 500, Base = Error) {
     this.code = code
     this.name = 'FastifyError'
     this.statusCode = statusCode
-
+    
+    if(hasCause) {
+      this.cause = args.pop()
+    }
+    
     this.message = format(message, ...args)
 
     Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
