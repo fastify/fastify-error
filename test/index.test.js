@@ -154,10 +154,11 @@ test('Create the error without the new keyword', t => {
 })
 
 test('Create an error with cause', t => {
-  t.plan(2);
-  const NewError = createError('CODE', 'Not available', 500, TypeError, true)
-  const err = NewError(new Error('Hey'));
+  t.plan(2)
+  const cause = new Error('HEY')
+  const NewError = createError('CODE', 'Not available')
+  const err = NewError({ cause })
 
-  t.ok(err instanceof Error);
-  t.ok(err.cause)
+  t.ok(err instanceof Error)
+  t.equal(err.cause, cause)
 })

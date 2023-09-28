@@ -69,3 +69,4 @@ expectError(new CustomTypedArgError6('a', 'b', 'c', 'd', 'e'))
 
 const CustomErrorWithErrorConstructor = createError('ERROR_CODE', 'message', 500, TypeError)
 expectType<FastifyErrorConstructor<{ code: 'ERROR_CODE', statusCode: 500 }>>(CustomErrorWithErrorConstructor)
+CustomErrorWithErrorConstructor({cause: new Error('Error')})
