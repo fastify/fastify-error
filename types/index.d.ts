@@ -11,7 +11,6 @@ declare function createError<C extends string, Arg extends unknown[] = [any?, an
   message: string,
   statusCode?: number,
   Base?: ErrorConstructor,
-  hasCause?: boolean,
 ): createError.FastifyErrorConstructor<{ code: C }, Arg>
 
 declare function createError<Arg extends unknown[] = [any?, any?, any?]> (
@@ -19,7 +18,6 @@ declare function createError<Arg extends unknown[] = [any?, any?, any?]> (
   message: string,
   statusCode?: number,
   Base?: ErrorConstructor,
-  hasCause?: boolean,
 ): createError.FastifyErrorConstructor<{ code: string }, Arg>
 
 type CreateError = typeof createError
