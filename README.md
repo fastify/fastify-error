@@ -37,6 +37,15 @@ const CustomError = createError('ERROR_CODE', 'Hello %s')
 console.log(new CustomError('world')) // error.message => 'Hello world'
 ```
 
+How to add cause:
+```js
+const createError = require('@fastify/error')
+const CustomError = createError('ERROR_CODE', 'Hello %s')
+console.log(new CustomError('world', {cause: new Error('cause')})) 
+// error.message => 'Hello world'
+// error.cause => Error('cause')
+```
+
 ### TypeScript
 
 It is possible to limit your error constructor with a generic type using TypeScript:
