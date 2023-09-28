@@ -3,7 +3,6 @@ declare function createError<C extends string, SC extends number, Arg extends un
   message: string,
   statusCode: SC,
   Base?: ErrorConstructor,
-  hasCause?: boolean,
 ): createError.FastifyErrorConstructor<{ code: C, statusCode: SC }, Arg>
 
 declare function createError<C extends string, Arg extends unknown[] = [any?, any?, any?]> (
