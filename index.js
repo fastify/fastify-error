@@ -22,7 +22,8 @@ function createError (code, message, statusCode = 500, Base = Error) {
     this.name = 'FastifyError'
     this.statusCode = statusCode
 
-    if (args.length && typeof args.at(-1) === 'object' && 'cause' in args.at(-1)) {
+    const lastElement = args.length - 1;
+    if (lastElement !== 1 && args[lastElement] && typeof args[lastElement] === 'object' && 'cause' in args[lastElement]) {
       this.cause = args.pop().cause
     }
 
