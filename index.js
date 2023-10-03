@@ -17,9 +17,15 @@ function createError (code, message, statusCode = 500, Base = Error) {
     if (!new.target) {
       return new FastifyError(...args)
     }
+
     this.code = code
     this.name = 'FastifyError'
     this.statusCode = statusCode
+
+    const lastElement = args.length - 1
+    if (lastElement !== 1 && args[lastElement] && typeof args[lastElement] === 'object' && 'cause' in args[lastElement]) {
+      this.cause = args.pop().cause
+    }
 
     this.message = format(message, ...args)
 
