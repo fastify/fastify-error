@@ -1,6 +1,6 @@
 'use strict'
 
-const test = require('tap').test
+const { test } = require('tap')
 const createError = require('..')
 
 test('Create error with zero parameter', t => {
