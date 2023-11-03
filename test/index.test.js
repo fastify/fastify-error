@@ -163,6 +163,16 @@ test('Create an error with cause', t => {
   t.equal(err.cause, cause)
 })
 
+test('Create an error with cause and message', t => {
+  t.plan(2)
+  const cause = new Error('HEY')
+  const NewError = createError('CODE', 'Not available: %s')
+  const err = NewError('foo', { cause })
+
+  t.ok(err instanceof Error)
+  t.equal(err.cause, cause)
+})
+
 test('Create an error with last argument null', t => {
   t.plan(2)
   const cause = new Error('HEY')
