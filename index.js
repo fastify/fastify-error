@@ -23,7 +23,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
     this.statusCode = statusCode
 
     const lastElement = args.length - 1
-    if (lastElement !== 1 && args[lastElement] && typeof args[lastElement] === 'object' && 'cause' in args[lastElement]) {
+    if (lastElement !== -1 && args[lastElement] && typeof args[lastElement] === 'object' && 'cause' in args[lastElement]) {
       this.cause = args.pop().cause
     }
 
