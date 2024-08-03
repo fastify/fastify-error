@@ -1,7 +1,6 @@
 'use strict'
 
 const test = require('node:test')
-const assert = require('node:assert')
 const createError = require('..')
 
 test('Create error with zero parameter', (t) => {
@@ -119,7 +118,7 @@ test('Should throw when error code has no fastify code', (t) => {
 })
 
 test('Should throw when error code has no message', (t) => {
-  assert.throws(
+  t.assert.throws(
     () => createError('code'),
     new Error('Fastify error message must not be empty')
   )
