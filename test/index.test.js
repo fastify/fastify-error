@@ -126,7 +126,7 @@ test('Should throw when error code has no message', (t) => {
 })
 
 test('Create error with different base', (t) => {
-  t.plan(6)
+  t.plan(7)
 
   const NewError = createError('CODE', 'hey %s', 500, TypeError)
   const err = new NewError('dude')
