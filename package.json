@@ -9,7 +9,7 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "test": "npm run test:unit && npm run test:typescript",
-    "test:unit": "tap",
+    "test:unit": "c8 node --test",
     "test:typescript": "tsd"
   },
   "repository": {
@@ -30,8 +30,8 @@
   "homepage": "https://github.com/fastify/fastify-error#readme",
   "devDependencies": {
     "benchmark": "^2.1.4",
+    "c8": "^10.1.2",
     "standard": "^17.1.0",
-    "tap": "^18.7.1",
     "tsd": "^0.31.0"
   },
   "tsd": {
