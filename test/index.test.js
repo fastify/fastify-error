@@ -120,7 +120,7 @@ test('Should throw when error code has no fastify code', (t) => {
 test('Should throw when error code has no message', (t) => {
   t.assert.throws(
     () => createError('code'),
-    new Error('Fastify error message must not be empty')
+    new Error('Fastify error message must be defined')
   )
 })
 
@@ -190,4 +190,43 @@ test('Create an error with last argument null', (t) => {
 
   t.assert.ok(err instanceof Error)
   t.assert.ifError(err.cause)
+})
+
+test('Create error with zero parameters, empty message', (t) => {
+  t.plan(6)
+
+  const NewError = createError('CODE', '')
+  const err = new NewError()
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, '')
+  t.assert.equal(err.code, 'CODE')
+  t.assert.equal(err.statusCode, 500)
+  t.assert.ok(err.stack)
+})
+
+test('Create error with one parameter, empty message', (t) => {
+  t.plan(6)
+
+  const NewError = createError('CODE', '')
+  const err = new NewError('alice')
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'alice')
+  t.assert.equal(err.code, 'CODE')
+  t.assert.equal(err.statusCode, 500)
+  t.assert.ok(err.stack)
+})
+
+test('Create error with two parameters, empty message', (t) => {
+  t.plan(6)
+
+  const NewError = createError('CODE', '')
+  const err = new NewError('alice', 'attitude')
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'alice attitude')
+  t.assert.equal(err.code, 'CODE')
+  t.assert.equal(err.statusCode, 500)
+  t.assert.ok(err.stack)
 })

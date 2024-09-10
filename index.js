@@ -8,7 +8,7 @@ function toString () {
 
 function createError (code, message, statusCode = 500, Base = Error) {
   if (!code) throw new Error('Fastify error code must not be empty')
-  if (!message) throw new Error('Fastify error message must not be empty')
+  if (message === null || message === undefined) throw new Error('Fastify error message must be defined')
 
   code = code.toUpperCase()
   !statusCode && (statusCode = undefined)
@@ -27,7 +27,7 @@ function createError (code, message, statusCode = 500, Base = Error) {
       this.cause = args.pop().cause
     }
 
-    this.message = format(message, ...args)
+    this.message = format(message, ...args).trim()
 
     Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
   }
