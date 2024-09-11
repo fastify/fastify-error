@@ -27,7 +27,8 @@ function createError (code, message, statusCode = 500, Base = Error) {
       this.cause = args.pop().cause
     }
 
-    this.message = format(message, ...args).trim()
+    if (message) args.unshift(message)
+    this.message = format(...args)
 
     Error.stackTraceLimit !== 0 && Error.captureStackTrace(this, FastifyError)
   }
