@@ -41,7 +41,7 @@ How to add cause:
 ```js
 const createError = require('@fastify/error')
 const CustomError = createError('ERROR_CODE', 'Hello %s')
-console.log(new CustomError('world', {cause: new Error('cause')})) 
+console.log(new CustomError('world', {cause: new Error('cause')}))
 // error.message => 'Hello world'
 // error.cause => Error('cause')
 ```
