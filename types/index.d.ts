@@ -3,7 +3,7 @@ declare function createError<C extends string, SC extends number, Arg extends un
   message: string,
   statusCode: SC,
   Base?: ErrorConstructor,
-  hideStackTrace?: boolean
+  captureStackTrace?: boolean
 ): createError.FastifyErrorConstructor<{ code: C, statusCode: SC }, Arg>
 
 declare function createError<C extends string, Arg extends unknown[] = [any?, any?, any?]> (
@@ -11,7 +11,7 @@ declare function createError<C extends string, Arg extends unknown[] = [any?, an
   message: string,
   statusCode?: number,
   Base?: ErrorConstructor,
-  hideStackTrace?: boolean
+  captureStackTrace?: boolean
 ): createError.FastifyErrorConstructor<{ code: C }, Arg>
 
 declare function createError<Arg extends unknown[] = [any?, any?, any?]> (
@@ -19,7 +19,7 @@ declare function createError<Arg extends unknown[] = [any?, any?, any?]> (
   message: string,
   statusCode?: number,
   Base?: ErrorConstructor,
-  hideStackTrace?: boolean
+  captureStackTrace?: boolean
 ): createError.FastifyErrorConstructor<{ code: string }, Arg>
 
 type CreateError = typeof createError
