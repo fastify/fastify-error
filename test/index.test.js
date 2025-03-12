@@ -138,6 +138,36 @@ test('Create error with different base', (t) => {
   t.assert.ok(err.stack)
 })
 
+test('Create error with different base (no stack)', (t) => {
+  t.plan(7)
+
+  createError.captureStackTrace = false
+  const NewError = createError('CODE', 'hey %s', 500, TypeError)
+  const err = new NewError('dude')
+  t.assert.ok(err instanceof Error)
+  t.assert.ok(err instanceof TypeError)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'hey dude')
+  t.assert.equal(err.code, 'CODE')
+  t.assert.equal(err.statusCode, 500)
+  t.assert.equal(err.stack, undefined)
+  createError.captureStackTrace = true
+})
+
+test('Create error with different base (no stack)', (t) => {
+  t.plan(7)
+
+  const NewError = createError('CODE', 'hey %s', 500, TypeError, false)
+  const err = new NewError('dude')
+  t.assert.ok(err instanceof Error)
+  t.assert.ok(err instanceof TypeError)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'hey dude')
+  t.assert.equal(err.code, 'CODE')
+  t.assert.equal(err.statusCode, 500)
+  t.assert.equal(err.stack, undefined)
+})
+
 test('FastifyError.toString returns code', (t) => {
   t.plan(1)
 
