@@ -138,7 +138,7 @@ test('Create error with different base', (t) => {
   t.assert.ok(err.stack)
 })
 
-test('Create error with different base (no stack)', (t) => {
+test('Create error with different base (no stack) (global)', (t) => {
   t.plan(7)
 
   createError.captureStackTrace = false
@@ -154,7 +154,7 @@ test('Create error with different base (no stack)', (t) => {
   createError.captureStackTrace = true
 })
 
-test('Create error with different base (no stack)', (t) => {
+test('Create error with different base (no stack) (parameter)', (t) => {
   t.plan(7)
 
   const NewError = createError('CODE', 'hey %s', 500, TypeError, false)
