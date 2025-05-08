@@ -1,6 +1,7 @@
 'use strict'
 
-const { format } = require('node:util')
+const formatGenerator = require('./lib/format-generator')
+const countSpecifiers = require('./lib/count-specifiers')
 
 function toString () {
   return `${this.name} [${this.code}]: ${this.message}`
@@ -13,6 +14,10 @@ function createError (code, message, statusCode = 500, Base = Error, captureStac
   code = code.toUpperCase()
   !statusCode && (statusCode = undefined)
 
+  const specifiersAmount = countSpecifiers(message)
+  const format = formatGenerator(message)
+  const withOptionsParameterLength = specifiersAmount + 1
+
   function FastifyError (...args) {
     if (!new.target) {
       return new FastifyError(...args)
@@ -22,12 +27,15 @@ function createError (code, message, statusCode = 500, Base = Error, captureStac
     this.name = 'FastifyError'
     this.statusCode = statusCode
 
-    const lastElement = args.length - 1
-    if (lastElement !== -1 && args[lastElement] && typeof args[lastElement] === 'object' && 'cause' in args[lastElement]) {
-      this.cause = args.pop().cause
+    if (
+      args.length === withOptionsParameterLength &&
+      typeof args[specifiersAmount] === 'object' &&
+      'cause' in args[specifiersAmount]
+    ) {
+      this.cause = args[specifiersAmount].cause
     }
 
-    this.message = format(message, ...args)
+    this.message = format(args)
 
     Error.stackTraceLimit && captureStackTrace && Error.captureStackTrace(this, FastifyError)
   }
