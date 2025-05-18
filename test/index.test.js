@@ -223,19 +223,21 @@ test('Create an error with last argument null', (t) => {
 })
 
 test('check if instanceof works', (t) => {
-  t.plan(5)
+  t.plan(7)
 
   const NewError = createError('CODE', 'Not available')
   const err = NewError()
 
-  const NewFastifySyntaxError = createError('CODE', 'Not available', 500, SyntaxError)
-  const syntaxErr = NewFastifySyntaxError()
+  const FastifySyntaxError = createError('CODE', 'Not available', 500, SyntaxError)
+  const syntaxErr = new FastifySyntaxError()
 
   t.assert.ok(err instanceof Error)
   t.assert.ok(err instanceof FastifyError)
+  t.assert.ok(err instanceof SyntaxError === false)
   t.assert.ok(new Error() instanceof FastifyError === false)
   t.assert.ok(syntaxErr instanceof SyntaxError)
   t.assert.ok(syntaxErr instanceof FastifyError)
+  t.assert.ok(syntaxErr instanceof FastifySyntaxError)
 })
 
 test('check if FastifyError is instantiable', (t) => {
