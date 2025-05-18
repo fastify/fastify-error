@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('node:test')
-const createError = require('..')
+const { createError, FastifyError } = require('..')
 
 test('Create error with zero parameter', (t) => {
   t.plan(6)
@@ -220,4 +220,29 @@ test('Create an error with last argument null', (t) => {
 
   t.assert.ok(err instanceof Error)
   t.assert.ifError(err.cause)
+})
+
+test('check if instanceof works', (t) => {
+  t.plan(5)
+
+  const NewError = createError('CODE', 'Not available')
+  const err = NewError()
+
+  const NewFastifySyntaxError = createError('CODE', 'Not available', 500, SyntaxError)
+  const syntaxErr = NewFastifySyntaxError()
+
+  t.assert.ok(err instanceof Error)
+  t.assert.ok(err instanceof FastifyError)
+  t.assert.ok(new Error() instanceof FastifyError === false)
+  t.assert.ok(syntaxErr instanceof SyntaxError)
+  t.assert.ok(syntaxErr instanceof FastifyError)
+})
+
+test('check if FastifyError is instantiable', (t) => {
+  t.plan(2)
+
+  const err = new FastifyError()
+
+  t.assert.ok(err instanceof FastifyError)
+  t.assert.ok(err instanceof Error)
 })
