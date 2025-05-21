@@ -97,6 +97,8 @@ test('ensure that instanceof works accross different installations of the fastif
 
     // Ensure that fastify-error is required from the node_modules directory of the test-project
     if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
+      console.error('actualPathOfFastifyError', actualPathOfFastifyError)
+      console.error('expectedPathOfFastifyError', expectedPathOfFastifyError)
       throw new Error('fastify-error should be required from the node_modules directory of the test-project')
     }
     
@@ -144,6 +146,8 @@ test('ensure that instanceof works accross different installations of the fastif
 
     // Ensure that fastify-error is required from the node_modules directory of the test-project
     if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
+      console.error('actualPathOfFastifyError', actualPathOfFastifyError)
+      console.error('expectedPathOfFastifyError', expectedPathOfFastifyError)
       throw new Error('fastify-error should be required from the node_modules directory of dep')
     }
     
