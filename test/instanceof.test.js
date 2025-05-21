@@ -90,6 +90,15 @@ test('ensure that instanceof works accross different installations of the fastif
     const { foo } = require('dep')
 
     function normalizePath (filePath) {
+      // normalize for cross platform
+      filePath = filePath.replace(/\\\\/g, '/')
+      filePath = filePath.replace(/(\\w):/, '/$1')
+      filePath = filePath.replace(/(\\w+)\\/\\.\\.\\/?/g, '')
+      filePath = filePath.replace(/^\\.\\//, '')
+      filePath = filePath.replace(/\\/\\.\\//, '/')
+      filePath = filePath.replace(/\\/\\.$/, '')
+      filePath = filePath.replace(/\\/$/, '')
+
       console.log('filePath', filePath)
       console.log('path.normalize(filePath)', path.normalize(filePath))
       console.log('path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}")', path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
@@ -144,6 +153,15 @@ test('ensure that instanceof works accross different installations of the fastif
     const { createError } = require('fastify-error')
     
     function normalizePath (filePath) {
+      // normalize for cross platform
+      filePath = filePath.replace(/\\\\/g, '/')
+      filePath = filePath.replace(/(\\w):/, '/$1')
+      filePath = filePath.replace(/(\\w+)\\/\\.\\.\\/?/g, '')
+      filePath = filePath.replace(/^\\.\\//, '')
+      filePath = filePath.replace(/\\/\\.\\//, '/')
+      filePath = filePath.replace(/\\/\\.$/, '')
+      filePath = filePath.replace(/\\/$/, '')
+
       console.log('filePath', filePath)
       console.log('path.normalize(filePath)', path.normalize(filePath))
       console.log('path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}")', path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
