@@ -56,7 +56,7 @@ test('check if createError creates an Error with the right BaseConstructor, whic
 })
 
 test('instanceof', async (t) => {
-  const assertsPlanned = 2
+  const assertsPlanned = 5
   t.plan(assertsPlanned)
 
   const testCwd = path.resolve(os.tmpdir())
@@ -88,9 +88,10 @@ test('instanceof', async (t) => {
     const { createError } = require('fastify-error')
     
     const Boom = createError('Boom', 'Boom', 500)
+    const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
 
     module.exports.foo = function foo () {
-        throw new Boom('foo go Boom')
+        throw new ChildBoom('foo go Boom')
     }
     `)
 
@@ -112,12 +113,17 @@ test('instanceof', async (t) => {
     const { foo } = require('main')
     
     const Boom = createError('Boom', 'Boom', 500)
+    const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
+    const NotChildBoom = createError('NotChildBoom', 'NotChildBoom', 500, Boom)
 
     try {
         foo()
     } catch (err) {
+        process.send(err instanceof Error)
         process.send(err instanceof FastifyError)
+        process.send(err instanceof NotChildBoom)
         process.send(err instanceof Boom)
+        process.send(err instanceof ChildBoom)
     }
     `)
 
@@ -134,7 +140,7 @@ test('instanceof', async (t) => {
 
   const child = cp.fork(path.resolve(testCwd, 'index.js'), {
     cwd: testCwd,
-    stdio: 'pipe',
+    stdio: 'inherit',
     env: {
       ...process.env,
       NODE_OPTIONS: '--no-warnings'
@@ -146,10 +152,19 @@ test('instanceof', async (t) => {
     try {
       switch (messageCount) {
         case 0:
-          t.assert.strictEqual(message, true, 'instanceof FastifyError')
+          t.assert.strictEqual(message, true, 'instanceof Error')
           break
         case 1:
-          t.assert.strictEqual(message, false, 'instanceof Boom')
+          t.assert.strictEqual(message, true, 'instanceof FastifyError')
+          break
+        case 2:
+          t.assert.strictEqual(message, false, 'instanceof NotChildBoom')
+          break
+        case 3:
+          t.assert.strictEqual(message, true, 'instanceof Boom')
+          break
+        case 4:
+          t.assert.strictEqual(message, true, 'instanceof ChildBoom')
           break
       }
       if (++messageCount === assertsPlanned) {
