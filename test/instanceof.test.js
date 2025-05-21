@@ -135,7 +135,7 @@ test('ensure that instanceof works accross different installations of the fastif
     const { createError } = require('fastify-error')
     
     function normalizePath (path) {
-      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-") - 1)
+      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-") - (process.platform === 'win32' ? 2 : 1))
       return normalizedPath
     }
 
