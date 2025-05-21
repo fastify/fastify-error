@@ -88,7 +88,7 @@ test('ensure that instanceof works accross different installations of the fastif
     const { foo } = require('dep')
 
     function normalizePath (path) {
-      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-"))
+      const normalizedPath = path.slice(path.lastIndexOf("fastify-error-instanceof-test-"))
       return normalizedPath
     }
 
@@ -137,7 +137,7 @@ test('ensure that instanceof works accross different installations of the fastif
     const { createError } = require('fastify-error')
     
     function normalizePath (path) {
-      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-"))
+      const normalizedPath = path.slice(path.lastIndexOf("fastify-error-instanceof-test-"))
       return normalizedPath
     }
 
