@@ -90,6 +90,11 @@ test('ensure that instanceof works accross different installations of the fastif
     const { foo } = require('dep')
 
     function normalizePath (filePath) {
+      console.log('filePath', filePath)
+      console.log('path.normalize(filePath)', path.normalize(filePath))
+      console.log('path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}")', path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
+      console.log('filePath.slice(path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}"))', filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}')))
+      
       const normalizedPath = filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
       return normalizedPath
     }
