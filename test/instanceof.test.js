@@ -89,14 +89,8 @@ test('ensure that instanceof works accross different installations of the fastif
     const { createError, FastifyError } = require('fastify-error')
     const { foo } = require('dep')
 
-    function normalizePath (filePath) {
-      filePath = path.normalize(filePath)
-      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}') + 1)
-      return filePath
-    }
-
-    const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
-    const expectedPathOfFastifyError = normalizePath(path.resolve('${testCwd}', 'node_modules', 'fastify-error', 'index.js'))
+    const actualPathOfFastifyError = require.resolve('fastify-error')
+    const expectedPathOfFastifyError = path.resolve('node_modules', 'fastify-error', 'index.js')
 
     // Ensure that fastify-error is required from the node_modules directory of the test-project
     if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
@@ -139,14 +133,8 @@ test('ensure that instanceof works accross different installations of the fastif
     const path = require('node:path')
     const { createError } = require('fastify-error')
 
-    function normalizePath (filePath) {
-      filePath = path.normalize(filePath)
-      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}') + 1)
-      return filePath
-    }
-
-    const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
-    const expectedPathOfFastifyError = normalizePath(path.resolve('${testCwd}','node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js'))
+    const actualPathOfFastifyError = require.resolve('fastify-error')
+    const expectedPathOfFastifyError = path.resolve('node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js')
 
     // Ensure that fastify-error is required from the node_modules directory of the test-project
     if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
