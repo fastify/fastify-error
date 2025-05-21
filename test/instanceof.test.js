@@ -55,62 +55,42 @@ test('check if createError creates an Error with the right BaseConstructor, whic
   t.assert.ok(err instanceof SyntaxError === false)
 })
 
-test('instanceof', async (t) => {
+// for more information see https://github.com/fastify/fastify-error/pull/86#issuecomment-1301466407
+test('ensure that instanceof works accross different installations of the fastify-error module', async (t) => {
   const assertsPlanned = 5
   t.plan(assertsPlanned)
 
-  const testCwd = path.resolve(os.tmpdir())
+  // We need to create a test environment where fastify-error is installed in two different locations
+  // and then we will check if the error created in one location is instanceof the error created in the other location
+  // This is done by creating a test directory with the following structure:
 
-  fs.mkdirSync(path.resolve(testCwd, 'node_modules', 'fastify-error'), { recursive: true })
+  // /
+  // ├── index.js
+  // └── node_modules/
+  //     ├── fastify-error/
+  //     │   └── index.js
+  //     └── dep/
+  //         ├── index.js
+  //         └── node_modules/
+  //             └── fastify-error/
+  //                 └── index.js
 
-  fs.copyFileSync(path.resolve(process.cwd(), 'index.js'), path.resolve(testCwd, 'node_modules', 'fastify-error', 'index.js'))
-  fs.copyFileSync(path.resolve(process.cwd(), 'package.json'), path.resolve(testCwd, 'node_modules', 'fastify-error', 'package.json'))
+  const testCwd = path.resolve(os.tmpdir(), `fastify-error-instanceof-test-${Math.random().toString(36).substring(2, 15)}`)
+  fs.mkdirSync(testCwd, { recursive: true })
 
-  fs.mkdirSync(path.resolve(testCwd, 'node_modules', 'main', 'node_modules', 'fastify-error'), { recursive: true })
-
-  fs.copyFileSync(path.resolve(process.cwd(), 'index.js'), path.resolve(testCwd, 'node_modules', 'main', 'node_modules', 'fastify-error', 'index.js'))
-  fs.copyFileSync(path.resolve(process.cwd(), 'package.json'), path.resolve(testCwd, 'node_modules', 'main', 'node_modules', 'fastify-error', 'package.json'))
-
-  fs.writeFileSync(path.resolve(testCwd, 'node_modules', 'main', 'package.json'), `
-    {
-      "name": "main",
-      "version": "1.0.0",
-      "description": "main",
-      "main": "index.js",
-      "dependencies": {
-        "fastify-error": "1.0.0"
-      }
-    }
-    `)
-  fs.writeFileSync(path.resolve(testCwd, 'node_modules', 'main', 'index.js'), `
-    'use strict'
-
-    const { createError } = require('fastify-error')
-    
-    const Boom = createError('Boom', 'Boom', 500)
-    const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
-
-    module.exports.foo = function foo () {
-        throw new ChildBoom('foo go Boom')
-    }
-    `)
-
-  fs.writeFileSync(path.resolve(testCwd, 'package.json'), `
-    {
-      "name": "test",
-      "version": "1.0.0",
-      "description": "main",
-      "main": "index.js",
-      "dependencies": {
-        "fastify-error": "1.0.0",
-        "main": "1.0.0"
-      }
-    }
-    `)
+  // Create the index.js. It will be executed as a forked process, so we need to
+  // use process.send to send messages back to the parent process.
   fs.writeFileSync(path.resolve(testCwd, 'index.js'), `
     'use strict'
+
+    const path = require('node:path')
     const { createError, FastifyError } = require('fastify-error')
-    const { foo } = require('main')
+    const { foo } = require('dep')
+
+    // Ensure that fastify-error is required from the node_modules directory of the test-project
+    if (require.resolve('fastify-error') !== path.resolve('${testCwd}', 'node_modules', 'fastify-error', 'index.js')) {
+      throw new Error('fastify-error should be required from the node_modules directory of the test-project')
+    }
     
     const Boom = createError('Boom', 'Boom', 500)
     const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
@@ -124,6 +104,38 @@ test('instanceof', async (t) => {
         process.send(err instanceof NotChildBoom)
         process.send(err instanceof Boom)
         process.send(err instanceof ChildBoom)
+    }
+    `)
+
+  // Create /node_modules/fastify-error directory
+  // Copy the index.js file to the fastify-error directory
+  fs.mkdirSync(path.resolve(testCwd, 'node_modules', 'fastify-error'), { recursive: true })
+  fs.copyFileSync(path.resolve(process.cwd(), 'index.js'), path.resolve(testCwd, 'node_modules', 'fastify-error', 'index.js'))
+
+  // Create /node_modules/dep/node_modules/fastify-error directory
+  // Copy the index.js to the fastify-error directory
+  fs.mkdirSync(path.resolve(testCwd, 'node_modules', 'dep', 'node_modules', 'fastify-error'), { recursive: true })
+  fs.copyFileSync(path.resolve(process.cwd(), 'index.js'), path.resolve(testCwd, 'node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js'))
+
+  // Create /node_modules/dep/index.js. It will export a function foo which will
+  // throw an error when called. The error will be an instance of ChildBoom, created
+  // by the fastify-error module in the node_modules directory of dep.
+  fs.writeFileSync(path.resolve(testCwd, 'node_modules', 'dep', 'index.js'), `
+    'use strict'
+
+    const path = require('node:path')
+    const { createError } = require('fastify-error')
+    
+    // Ensure that fastify-error is required from the node_modules directory of dep
+    if (require.resolve('fastify-error') !== path.resolve('${testCwd}','node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js')) {
+      throw new Error('fastify-error should be required from the node_modules directory of dep')
+    }
+  
+    const Boom = createError('Boom', 'Boom', 500)
+    const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
+
+    module.exports.foo = function foo () {
+        throw new ChildBoom('foo go Boom')
     }
     `)
 
@@ -180,4 +192,11 @@ test('instanceof', async (t) => {
   })
 
   await finishedPromise.promise
+
+  // Cleanup
+  // As we are creating the test-setup on the fly in the /tmp directory, we can remove it
+  // safely when we are done. It is not relevant for the test if the deletion fails.
+  try {
+    fs.rmSync(testCwd, { recursive: true, force: true })
+  } catch {}
 })
