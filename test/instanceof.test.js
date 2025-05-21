@@ -90,22 +90,9 @@ test('ensure that instanceof works accross different installations of the fastif
     const { foo } = require('dep')
 
     function normalizePath (filePath) {
-      // normalize for cross platform
-      filePath = filePath.replace(/\\\\/g, '/')
-      filePath = filePath.replace(/(\\w):/, '/$1')
-      filePath = filePath.replace(/(\\w+)\\/\\.\\.\\/?/g, '')
-      filePath = filePath.replace(/^\\.\\//, '')
-      filePath = filePath.replace(/\\/\\.\\//, '/')
-      filePath = filePath.replace(/\\/\\.$/, '')
-      filePath = filePath.replace(/\\/$/, '')
-
-      console.log('filePath', filePath)
-      console.log('path.normalize(filePath)', path.normalize(filePath))
-      console.log('path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}")', path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
-      console.log('filePath.slice(path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}"))', filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}')))
-      
-      const normalizedPath = filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
-      return normalizedPath
+      filePath = path.normalize(filePath)
+      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}'))
+      return filePath
     }
 
     const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
@@ -151,24 +138,11 @@ test('ensure that instanceof works accross different installations of the fastif
 
     const path = require('node:path')
     const { createError } = require('fastify-error')
-    
-    function normalizePath (filePath) {
-      // normalize for cross platform
-      filePath = filePath.replace(/\\\\/g, '/')
-      filePath = filePath.replace(/(\\w):/, '/$1')
-      filePath = filePath.replace(/(\\w+)\\/\\.\\.\\/?/g, '')
-      filePath = filePath.replace(/^\\.\\//, '')
-      filePath = filePath.replace(/\\/\\.\\//, '/')
-      filePath = filePath.replace(/\\/\\.$/, '')
-      filePath = filePath.replace(/\\/$/, '')
 
-      console.log('filePath', filePath)
-      console.log('path.normalize(filePath)', path.normalize(filePath))
-      console.log('path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}")', path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
-      console.log('filePath.slice(path.normalize(filePath).lastIndexOf("${testDirectoryPrefix}"))', filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}')))
-      
-      const normalizedPath = filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
-      return normalizedPath
+    function normalizePath (filePath) {
+      filePath = path.normalize(filePath)
+      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}'))
+      return filePath
     }
 
     const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
