@@ -91,7 +91,7 @@ test('ensure that instanceof works accross different installations of the fastif
 
     function normalizePath (filePath) {
       filePath = path.normalize(filePath)
-      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}'))
+      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}') + 1)
       return filePath
     }
 
@@ -141,7 +141,7 @@ test('ensure that instanceof works accross different installations of the fastif
 
     function normalizePath (filePath) {
       filePath = path.normalize(filePath)
-      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}'))
+      filePath = filePath.slice(filePath.lastIndexOf('${testDirectoryPrefix}') + 1)
       return filePath
     }
 
