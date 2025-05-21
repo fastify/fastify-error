@@ -7,6 +7,55 @@ const os = require('node:os')
 const test = require('node:test')
 const { createError, FastifyError } = require('..')
 
+test('Readme: All errors created with `createError` will be instances of the base error constructor you provided, or `Error` if none was provided.', (t) => {
+  t.plan(3)
+
+  const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+  const customError = new CustomError('world')
+
+  t.assert.ok(customError instanceof CustomError)
+  t.assert.ok(customError instanceof TypeError)
+  t.assert.ok(customError instanceof Error)
+})
+
+test('Readme: All instantiated errors will be instances of the `FastifyError` class. The `FastifyError` class can be required from the module directly.', (t) => {
+  t.plan(1)
+
+  const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+  const customError = new CustomError('world')
+
+  t.assert.ok(customError instanceof FastifyError)
+})
+
+test('Readme: It is possible to create a `FastifyError` that extends another `FastifyError`, created by `createError`, while instanceof working correctly.', (t) => {
+  t.plan(5)
+
+  const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+  const ChildCustomError = createError('CHILD_ERROR_CODE', 'Hello %s', 500, CustomError)
+
+  const customError = new ChildCustomError('world')
+
+  t.assert.ok(customError instanceof ChildCustomError)
+  t.assert.ok(customError instanceof CustomError)
+  t.assert.ok(customError instanceof FastifyError)
+  t.assert.ok(customError instanceof TypeError)
+  t.assert.ok(customError instanceof Error)
+})
+
+test('Readme: Changing the code of an instantiated Error will not change the result of the `instanceof` operator.', (t) => {
+  t.plan(3)
+
+  const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+  const AnotherCustomError = createError('ANOTHER_ERROR_CODE', 'Hello %s', 500, CustomError)
+
+  const customError = new CustomError('world')
+  customError.code = 'ANOTHER_ERROR_CODE'
+
+  t.assert.ok(customError instanceof CustomError)
+  t.assert.ok(customError instanceof AnotherCustomError === false)
+  t.assert.ok(customError instanceof FastifyError)
+})
+
 test('check if createError creates an Error which is instanceof Error', (t) => {
   t.plan(3)
 

@@ -15,7 +15,7 @@ npm i @fastify/error
 
 The module exports a function that you can use for consistent error objects, it takes 4 parameters:
 
-```
+```js
 createError(code, message [, statusCode [, Base [, captureStackTrace]]])
 ```
 
@@ -56,6 +56,83 @@ const CustomError = createError<[string]>('ERROR_CODE', 'Hello %s')
 new CustomError('world')
 //@ts-expect-error
 new CustomError(1)
+```
+
+### instanceof
+
+All errors created with `createError` will be instances of the base error constructor you provided, or `Error` if none was provided.
+
+```js
+const createError = require('@fastify/error')
+const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+const customError = new CustomError('world')
+
+console.log(customError instanceof CustomError) // true
+console.log(customError instanceof TypeError) // true
+console.log(customError instanceof Error) // true
+```
+
+All instantiated errors will be instances of the `FastifyError` class. The `FastifyError` class can be required from the module directly.
+
+```js
+const { createError, FastifyError } = require('@fastify/error')
+const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+const customError = new CustomError('world')
+
+console.log(customError instanceof FastifyError) // true
+```
+
+It is possible to create a `FastifyError` that extends another `FastifyError`, created by `createError`, while instanceof working correctly.
+
+```js
+const { createError, FastifyError } = require('@fastify/error')
+
+const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+const ChildCustomError = createError('CHILD_ERROR_CODE', 'Hello %s', 500, CustomError)
+
+const customError = new ChildCustomError('world')
+
+console.log(customError instanceof ChildCustomError) // true
+console.log(customError instanceof CustomError) // true
+console.log(customError instanceof FastifyError) // true
+console.log(customError instanceof TypeError) // true
+console.log(customError instanceof Error) // true
+```
+
+If `fastify-error` is installed multiple times as direct and/or transitive dependency, it is ensured that Errors created with `createError` are working with the `instanceof` operator correctly cross the `fastify-error` installation, as long the code, e.g. `FST_ERR_CUSTOM_ERROR`, is the same. 
+
+```js
+const { createError, FastifyError } = require('@fastify/error')
+
+// CustomError from `@fastify/some-plugin` is created with `createError` and
+// has its own `@fastify/error` installation as dependency. CustomError has
+// FST_ERR_CUSTOM_ERROR as code.
+const { CustomError: CustomErrorFromPlugin } = require('@fastify/some-plugin')
+
+const CustomError = createError('FST_ERR_CUSTOM_ERROR', 'Hello %s', 500)
+
+const customError = new CustomError('world')
+const customErrorFromPlugin = new CustomErrorFromPlugin('world')
+
+console.log(customError instanceof CustomError) // true
+console.log(customError instanceof CustomErrorFromPlugin) // true
+console.log(customErrorFromPlugin instanceof CustomError) // true
+console.log(customErrorFromPlugin instanceof CustomErrorFromPlugin) // true
+```
+
+Changing the code of an instantiated Error will not change the result of the `instanceof` operator.
+
+```js
+const { createError, FastifyError } = require('@fastify/error')
+
+const CustomError = createError('ERROR_CODE', 'Hello %s', 500, TypeError)
+const AnotherCustomError = createError('ANOTHER_ERROR_CODE', 'Hello %s', 500, CustomError)
+
+const customError = new CustomError('world')
+customError.code = 'ANOTHER_ERROR_CODE'
+
+console.log(customError instanceof CustomError) // true
+console.log(customError instanceof AnotherCustomError) // false
 ```
 
 ## License
