@@ -75,7 +75,9 @@ test('ensure that instanceof works accross different installations of the fastif
   //             └── fastify-error/
   //                 └── index.js
 
-  const testCwd = path.resolve(os.tmpdir(), `fastify-error-instanceof-test-${Math.random().toString(36).substring(2, 15)}`)
+  const testDirectoryPrefix = 'fastify-error-instanceof-test-'
+
+  const testCwd = path.resolve(os.tmpdir(), `${testDirectoryPrefix}${Math.random().toString(36).substring(2, 15)}`)
   fs.mkdirSync(testCwd, { recursive: true })
 
   // Create the index.js. It will be executed as a forked process, so we need to
@@ -87,8 +89,8 @@ test('ensure that instanceof works accross different installations of the fastif
     const { createError, FastifyError } = require('fastify-error')
     const { foo } = require('dep')
 
-    function normalizePath (path) {
-      const normalizedPath = path.slice(path.lastIndexOf("fastify-error-instanceof-test-"))
+    function normalizePath (filePath) {
+      const normalizedPath = filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
       return normalizedPath
     }
 
@@ -136,8 +138,8 @@ test('ensure that instanceof works accross different installations of the fastif
     const path = require('node:path')
     const { createError } = require('fastify-error')
     
-    function normalizePath (path) {
-      const normalizedPath = path.slice(path.lastIndexOf("fastify-error-instanceof-test-"))
+    function normalizePath (filePath) {
+      const normalizedPath = filePath.slice(path.normalize(filePath).lastIndexOf('${testDirectoryPrefix}'))
       return normalizedPath
     }
 
