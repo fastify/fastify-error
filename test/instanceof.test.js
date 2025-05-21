@@ -86,13 +86,17 @@ test('ensure that instanceof works accross different installations of the fastif
     const path = require('node:path')
     const { createError, FastifyError } = require('fastify-error')
     const { foo } = require('dep')
-    
-    console.log({
-      actual: require.resolve('fastify-error'),
-      expected: path.resolve('${testCwd}', 'node_modules', 'fastify-error', 'index.js'),
-    })
+
+    function normalizePath (path) {
+      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-") - 1)
+      return normalizedPath
+    }
+
+    const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
+    const expectedPathOfFastifyError = normalizePath(path.resolve('${testCwd}', 'node_modules', 'fastify-error', 'index.js'))
+
     // Ensure that fastify-error is required from the node_modules directory of the test-project
-    if (require.resolve('fastify-error') !== path.resolve('${testCwd}', 'node_modules', 'fastify-error', 'index.js')) {
+    if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
       throw new Error('fastify-error should be required from the node_modules directory of the test-project')
     }
     
@@ -130,16 +134,19 @@ test('ensure that instanceof works accross different installations of the fastif
     const path = require('node:path')
     const { createError } = require('fastify-error')
     
-    console.log({
-      actual: require.resolve('fastify-error'),
-      expected: path.resolve('${testCwd}','node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js'),
-    })
-  
-    // Ensure that fastify-error is required from the node_modules directory of dep
-    if (require.resolve('fastify-error') !== path.resolve('${testCwd}','node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js')) {
+    function normalizePath (path) {
+      const normalizedPath = path.slice(path.indexOf("fastify-error-instanceof-test-") - 1)
+      return normalizedPath
+    }
+
+    const actualPathOfFastifyError = normalizePath(require.resolve('fastify-error'))
+    const expectedPathOfFastifyError = normalizePath(path.resolve('${testCwd}','node_modules', 'dep', 'node_modules', 'fastify-error', 'index.js'))
+
+    // Ensure that fastify-error is required from the node_modules directory of the test-project
+    if (actualPathOfFastifyError !== expectedPathOfFastifyError) {
       throw new Error('fastify-error should be required from the node_modules directory of dep')
     }
-  
+    
     const Boom = createError('Boom', 'Boom', 500)
     const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
 
