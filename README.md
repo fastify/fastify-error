@@ -72,7 +72,7 @@ console.log(customError instanceof TypeError) // true
 console.log(customError instanceof Error) // true
 ```
 
-All instantiated errors will be instances of the `FastifyError` class. The `FastifyError` class can be required from the module directly.
+All instantiated errors are instances of the `FastifyError` class, which can be required directly from the module.
 
 ```js
 const { createError, FastifyError } = require('@fastify/error')
@@ -82,7 +82,7 @@ const customError = new CustomError('world')
 console.log(customError instanceof FastifyError) // true
 ```
 
-It is possible to create a `FastifyError` that extends another `FastifyError`, created by `createError`, while instanceof working correctly.
+A `FastifyError` created by `createError` can extend another `FastifyError` while maintaining correct `instanceof` behavior.
 
 ```js
 const { createError, FastifyError } = require('@fastify/error')
@@ -99,7 +99,7 @@ console.log(customError instanceof TypeError) // true
 console.log(customError instanceof Error) // true
 ```
 
-If `fastify-error` is installed multiple times as direct and/or transitive dependency, it is ensured that Errors created with `createError` are working with the `instanceof` operator correctly cross the `fastify-error` installation, as long the code, e.g. `FST_ERR_CUSTOM_ERROR`, is the same. 
+If `fastify-error` is installed multiple times directly or as a transitive dependency, `instanceof` checks for errors created by `createError` will still work correctly across these installations, as long as their error codes (e.g., `FST_ERR_CUSTOM_ERROR`) are identical.
 
 ```js
 const { createError, FastifyError } = require('@fastify/error')
