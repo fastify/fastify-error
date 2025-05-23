@@ -40,6 +40,8 @@ declare namespace createError {
     readonly prototype: FastifyError & E
   }
 
+  export const FastifyError: FastifyErrorConstructor
+
   export const createError: CreateError
   export { createError as default }
 }
