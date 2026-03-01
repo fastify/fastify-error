@@ -147,7 +147,7 @@ test('ensure that instanceof works accross different installations of the fastif
       console.error('expectedPathOfFastifyError', expectedPathOfFastifyError)
       throw new Error('fastify-error should be required from the node_modules directory of the test-project')
     }
-    
+
     const Boom = createError('Boom', 'Boom', 500)
     const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
     const NotChildBoom = createError('NotChildBoom', 'NotChildBoom', 500, Boom)
@@ -191,7 +191,7 @@ test('ensure that instanceof works accross different installations of the fastif
       console.error('expectedPathOfFastifyError', expectedPathOfFastifyError)
       throw new Error('fastify-error should be required from the node_modules directory of dep')
     }
-    
+
     const Boom = createError('Boom', 'Boom', 500)
     const ChildBoom = createError('ChildBoom', 'Boom', 500, Boom)
 
