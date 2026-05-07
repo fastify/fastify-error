@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix",
     "test": "npm run test:unit && npm run test:typescript",
     "test:unit": "c8 --100 node --test",
-    "test:typescript": "tsd"
+    "test:typescript": "tstyche"
   },
   "repository": {
     "type": "git",
@@ -62,12 +62,7 @@
     "c8": "^11.0.0",
     "eslint": "^9.17.0",
     "neostandard": "^0.13.0",
-    "tsd": "^0.33.0"
-  },
-  "tsd": {
-    "compilerOptions": {
-      "esModuleInterop": true
-    }
+    "tstyche": "^7.1.0"
   },
   "publishConfig": {
     "access": "public"
