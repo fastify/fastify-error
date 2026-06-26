@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('node:test')
-const { createError, FastifyError } = require('..')
+const { createError, FastifyError, createRFC7807Error } = require('..')
 
 test('Create error with zero parameter', (t) => {
   t.plan(6)
@@ -229,4 +229,46 @@ test('check if FastifyError is instantiable', (t) => {
 
   t.assert.ok(err instanceof FastifyError)
   t.assert.ok(err instanceof Error)
+})
+
+test('toRFC7807() with defaults', (t) => {
+  t.plan(1)
+
+  const E = createRFC7807Error('CODE', 'oops')
+  const e = new E()
+  const pd = e.toRFC7807('/test')
+
+  t.assert.deepStrictEqual(pd, {
+    type: 'about:blank',
+    title: 'FastifyError',
+    status: 500,
+    detail: 'oops',
+    instance: '/test',
+    code: 'CODE',
+    details: {}
+  })
+})
+
+test('toRFC7807() merges extension details', (t) => {
+  t.plan(1)
+
+  const Warning = createRFC7807Error(
+    'WARN',
+    'Threshold exceeded by %d',
+    429,
+    { type: 'https://example.net/probs/warn', title: 'Warning' }
+  )
+  const w = new Warning(7)
+
+  const pd = w.toRFC7807('/limit', { retryAfter: 60, exceeded: true })
+
+  t.assert.deepStrictEqual(pd, {
+    type: 'https://example.net/probs/warn',
+    title: 'Warning',
+    status: 429,
+    detail: 'Threshold exceeded by 7',
+    instance: '/limit',
+    code: 'WARN',
+    details: { retryAfter: 60, exceeded: true }
+  })
 })
