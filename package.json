@@ -22,6 +22,10 @@
     "utility",
     "plugin"
   ],
+  "files": [
+    "types/*.d.ts",
+    "index.js"
+  ],
   "author": "Tomas Della Vedova",
   "contributors": [
     {
