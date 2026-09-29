@@ -230,3 +230,37 @@ test('check if FastifyError is instantiable', (t) => {
   t.assert.ok(err instanceof FastifyError)
   t.assert.ok(err instanceof Error)
 })
+
+test('Create error with array of parameters', (t) => {
+  t.plan(3)
+
+  const NewError = createError('CODE', 'hey %s, I like your %s')
+  const err = new NewError(['alice', 'attitude'])
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'hey alice, I like your attitude')
+})
+
+test('Create error with object input containing messageParams and cause', (t) => {
+  t.plan(4)
+
+  const cause = new Error('root cause')
+  const NewError = createError('CODE', 'hey %s, I like your %s')
+  const err = new NewError({ messageParams: ['alice', 'attitude'], cause })
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'hey alice, I like your attitude')
+  t.assert.equal(err.cause, cause)
+})
+
+test('Create error with object input containing only cause when format parameters exist', (t) => {
+  t.plan(3)
+
+  const cause = new Error('root cause')
+  const NewError = createError('CODE', 'hey %s')
+  const err = new NewError({ cause })
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.message, 'hey %s')
+  t.assert.equal(err.cause, cause)
+})
+
