@@ -264,3 +264,12 @@ test('Create error with object input containing only cause when format parameter
   t.assert.equal(err.cause, cause)
 })
 
+test('Create error with object input containing single messageParams (non-array)', (t) => {
+  t.plan(3)
+
+  const NewError = createError('CODE', 'hey %s')
+  const err = new NewError({ messageParams: 'alice' })
+  t.assert.ok(err instanceof Error)
+  t.assert.equal(err.name, 'FastifyError')
+  t.assert.equal(err.message, 'hey alice')
+})

@@ -5,7 +5,6 @@ const { format } = require('node:util')
 const formatSpecifierRegex = /%[sdifjjoOc]/g
 
 function countFormatSpecifiers (str) {
-  if (typeof str !== 'string') return 0
   const cleaned = str.replace(/%%/g, '')
   const matches = cleaned.match(formatSpecifierRegex)
   return matches ? matches.length : 0
