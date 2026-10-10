@@ -90,11 +90,39 @@ function createError (code, message, statusCode = 500, Base = Error, captureStac
   return FastifyError
 }
 
+function createRFC7807Error (
+  code,
+  message,
+  statusCode = 500,
+  opts = {},
+  Base = Error,
+  captureStackTrace = createError.captureStackTrace
+) {
+  const Err = createError(code, message, statusCode, Base, captureStackTrace)
+
+  Err.type = opts.type || 'about:blank'
+  Err.title = opts.title || 'FastifyError'
+
+  Err.prototype.toRFC7807 = function (instance = '', details = {}) {
+    return {
+      type: Err.type,
+      title: Err.title,
+      status: this.statusCode ?? statusCode,
+      detail: this.message,
+      instance,
+      code: this.code,
+      details
+    }
+  }
+  return Err
+}
+
 createError.captureStackTrace = true
 
 const FastifyErrorConstructor = createError(FastifyGenericErrorSymbol, 'Fastify Error', 500, Error)
 
 module.exports = createError
 module.exports.FastifyError = FastifyErrorConstructor
+module.exports.createRFC7807Error = createRFC7807Error
 module.exports.default = createError
 module.exports.createError = createError
