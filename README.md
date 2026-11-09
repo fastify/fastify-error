@@ -47,6 +47,45 @@ console.log(new CustomError('world', {cause: new Error('cause')}))
 // error.cause => Error('cause')
 ```
 
+#### RFC 9457 problem details
+
+The module also exports `createRFC9457Error`, which creates error objects that can be serialized as [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457.html) problem details objects (RFC 9457 obsoletes RFC 7807):
+
+```js
+createRFC9457Error(code, message [, statusCode [, opts [, Base [, captureStackTrace]]]])
+```
+
+It accepts the same parameters as `createError`, plus an optional `opts` object:
+
+- `type` (`string`, optional) - A URI reference that identifies the problem type. Defaults to `'about:blank'`.
+- `title` (`string`, optional) - A short, human-readable summary of the problem type. Defaults to the HTTP status reason phrase for the error's status code (e.g. `'Not Found'` for `404`).
+
+The created error instances expose a `toProblemDetails(instance [, details])` method that returns the problem details object:
+
+```js
+const { createRFC9457Error } = require('@fastify/error')
+
+const QuotaExceeded = createRFC9457Error(
+  'QUOTA_EXCEEDED',
+  'Quota exceeded by %d requests',
+  429,
+  { type: 'https://example.net/probs/quota', title: 'Quota Exceeded' }
+)
+
+console.log(new QuotaExceeded(7).toProblemDetails('/api/limits', { retryAfter: 60 }))
+// {
+//   type: 'https://example.net/probs/quota',
+//   title: 'Quota Exceeded',
+//   status: 429,
+//   detail: 'Quota exceeded by 7 requests',
+//   instance: '/api/limits',
+//   code: 'QUOTA_EXCEEDED',
+//   details: { retryAfter: 60 }
+// }
+```
+
+`instance` is a URI reference that identifies the specific occurrence of the problem (e.g. the request path), and `details` carries additional extension members. `code` and `details` are [extension members](https://www.rfc-editor.org/rfc/rfc9457.html#name-extension-members) and are not defined by RFC 9457 itself.
+
 ### TypeScript
 
 It is possible to limit your error constructor with a generic type using TypeScript:
