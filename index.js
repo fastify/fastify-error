@@ -1,5 +1,6 @@
 'use strict'
 
+const { STATUS_CODES } = require('node:http')
 const { format } = require('node:util')
 
 function toString () {
@@ -90,6 +91,38 @@ function createError (code, message, statusCode = 500, Base = Error, captureStac
   return FastifyError
 }
 
+function createRFC9457Error (
+  code,
+  message,
+  statusCode = 500,
+  opts = {},
+  Base = Error,
+  captureStackTrace = createError.captureStackTrace
+) {
+  const RFC9457Error = createError(code, message, statusCode, Base, captureStackTrace)
+
+  const type = opts.type || 'about:blank'
+  const title = opts.title
+
+  RFC9457Error.prototype.toProblemDetails = function (instance = '', details = {}) {
+    const status = this.statusCode ?? statusCode
+
+    return {
+      type,
+      // RFC 9457 recommends the HTTP status reason phrase as the title
+      // when no dedicated title is available
+      title: title || STATUS_CODES[status] || 'Unknown Error',
+      status,
+      detail: this.message,
+      instance,
+      code: this.code,
+      details
+    }
+  }
+
+  return RFC9457Error
+}
+
 createError.captureStackTrace = true
 
 const FastifyErrorConstructor = createError(FastifyGenericErrorSymbol, 'Fastify Error', 500, Error)
@@ -98,3 +131,4 @@ module.exports = createError
 module.exports.FastifyError = FastifyErrorConstructor
 module.exports.default = createError
 module.exports.createError = createError
+module.exports.createRFC9457Error = createRFC9457Error

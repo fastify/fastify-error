@@ -1,5 +1,5 @@
 import { expect } from 'tstyche'
-import createError, { FastifyError, FastifyErrorConstructor } from '..'
+import createError, { FastifyError, FastifyErrorConstructor, RFC9457Error, RFC9457ErrorConstructor, RFC9457ProblemDetails, createRFC9457Error } from '..'
 
 const CustomError = createError('ERROR_CODE', 'message')
 expect(CustomError).type.toBe<
@@ -151,3 +151,49 @@ if (error instanceof FastifyError) {
   expect(error.message).type.toBe<string>()
   expect(error.statusCode).type.toBe<number | undefined>()
 }
+
+const RFC9457CustomError = createRFC9457Error('ERROR_CODE', 'message')
+expect(RFC9457CustomError).type.toBe<
+  RFC9457ErrorConstructor<{ code: 'ERROR_CODE' }>
+>()
+const rfc9457Err = new RFC9457CustomError()
+expect(rfc9457Err).type.toBe<RFC9457Error & { code: 'ERROR_CODE' }>()
+expect(rfc9457Err.code).type.toBe<'ERROR_CODE'>()
+expect(rfc9457Err.message).type.toBe<string>()
+expect(rfc9457Err.statusCode).type.toBe<number | undefined>()
+
+const problemDetails = rfc9457Err.toProblemDetails('/path', { extra: 1 })
+expect(problemDetails).type.toBe<RFC9457ProblemDetails>()
+expect(problemDetails.type).type.toBe<string>()
+expect(problemDetails.title).type.toBe<string>()
+expect(problemDetails.status).type.toBe<number>()
+expect(problemDetails.detail).type.toBe<string>()
+expect(problemDetails.instance).type.toBe<string>()
+expect(problemDetails.code).type.toBe<string>()
+expect(problemDetails.details).type.toBe<Record<string, unknown>>()
+
+const RFC9457TypedError = createRFC9457Error(
+  'OTHER_CODE',
+  'message',
+  400,
+  { type: 'https://example.net/probs/other', title: 'Other' }
+)
+expect(RFC9457TypedError).type.toBe<
+  RFC9457ErrorConstructor<{ code: 'OTHER_CODE'; statusCode: 400 }>
+>()
+const rfc9457Typed = new RFC9457TypedError()
+expect(rfc9457Typed).type.toBe<
+  RFC9457Error & { code: 'OTHER_CODE'; statusCode: 400 }
+>()
+expect(rfc9457Typed.statusCode).type.toBe<400>()
+
+const RFC9457TypedArgError = createRFC9457Error<[string]>(
+  'ARG_CODE',
+  'expect %s message',
+  400
+)
+RFC9457TypedArgError('a')
+expect(RFC9457TypedArgError).type.not.toBeCallableWith('a', 'b')
+expect(RFC9457TypedArgError).type.not.toBeConstructableWith('a', 'b')
+expect(RFC9457TypedArgError).type.not.toBeCallableWith(1)
+expect(RFC9457TypedArgError).type.not.toBeConstructableWith(1)
